@@ -28,7 +28,21 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-  
+
+  # Base de datos para almacenar y limpiar datos
+  mysql:
+    image: mysql:latest
+    container_name: mysql_data
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: data_db
+      MYSQL_USER: data_user
+      MYSQL_PASSWORD: data_pass
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
 
   postgres:
     image: postgres:latest
@@ -59,6 +73,12 @@ services:
               apt update -y; apt install procps net-tools iputils-ping traceroute -y
               pip install virtualenv apache-airflow apache-airflow-providers-postgres
               pip install pandas
+              pip install mlflow
+              pip install scikit-learn
+              pip install joblib
+              pip install numpy
+              pip install sqlalchemy
+              pip install pymysql
               apt-get update && apt-get install -y postgresql-client
               echo 'Instalacion de Airflow Ok!'
               airflow standalone >> /app/airflow/app.log 2>&1 &
@@ -94,3 +114,4 @@ services:
 
 volumes:
   postgres_data:
+  mysql_data:
