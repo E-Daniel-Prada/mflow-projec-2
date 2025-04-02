@@ -38,10 +38,10 @@ def insert_data(**kwargs):
     records = ti.xcom_pull(task_ids='fetch_data')
     
     conn = pymysql.connect(
-        host="mysql_host",
-        user="data_user",
-        password="data_pass",
-        database="data_db"
+        host="mysql",
+        user="root",
+        password="root",
+        database="jupyter_db"
     )
     
     cursor = conn.cursor()
