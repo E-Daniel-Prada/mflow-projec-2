@@ -20,7 +20,7 @@ dag = DAG(
     'mlops_pipeline',
     default_args=default_args,
     description='Pipeline de MLOps con Airflow y MLflow',
-    schedule_interval=timedelta(minutes=5),
+    schedule_interval=timedelta(minutes=3),
     catchup=False
 )
 

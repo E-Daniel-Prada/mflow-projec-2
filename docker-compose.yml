@@ -43,6 +43,7 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+      - ./initdb:/docker-entrypoint-initdb.d 
 
   postgres:
     image: postgres:latest
@@ -63,6 +64,7 @@ services:
     volumes:
         - ./dags:/app/airflow/dags
         - ./data:/usr/local/airflow/data
+        - ./requirements.txt:/requirements.txt
     command:
           - /bin/sh
           - -c
@@ -71,15 +73,8 @@ services:
               touch /app/airflow/app.log
               pip install --upgrade pip
               apt update -y; apt install procps net-tools iputils-ping traceroute -y
-              pip install virtualenv apache-airflow apache-airflow-providers-postgres
-              pip install pandas
-              pip install mlflow
-              pip install scikit-learn
-              pip install joblib
-              pip install numpy
-              pip install sqlalchemy
-              pip install pymysql
               apt-get update && apt-get install -y postgresql-client
+              pip install -r /requirements.txt
               echo 'Instalacion de Airflow Ok!'
               airflow standalone >> /app/airflow/app.log 2>&1 &
               sleep 20; airflow connections delete postgres_default

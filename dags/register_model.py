@@ -1,13 +1,25 @@
 import mlflow
-import os  # ✅ Para manejar rutas
-import shutil  # ✅ Para copiar archivos
+import mlflow.sklearn
+import os
 
 def register_model():
-    mlflow.set_tracking_uri("http://mlflow:5000")
+    try:
+        mlflow.set_tracking_uri("http://mlflow:5000")
+        mlflow.set_experiment("forest-cover-type")
 
-    experiment_id = mlflow.create_experiment("ML Model Experiment")
-    with mlflow.start_run(experiment_id=experiment_id):
-        mlflow.log_param("model", "Linear Regression")
-        mlflow.log_artifact("model.pkl")
-    
-    print("Modelo registrado en MLflow")
+        # Iniciar una nueva ejecución
+        with mlflow.start_run(run_name="model_register"):
+
+            # Registrar el modelo entrenado previamente
+            model_path = "model.pkl"
+            if not os.path.exists(model_path):
+                raise FileNotFoundError("No se encontró model.pkl para registrar")
+
+            # Cargar y registrar el modelo con un nombre explícito
+            model = mlflow.sklearn.load_model(model_path)
+            mlflow.sklearn.log_model(model, "model", registered_model_name="RandomForestCoverType")
+
+            print("Modelo registrado en MLflow")
+
+    except Exception as e:
+        print(f"[ERROR] Error al registrar el modelo: {e}")
