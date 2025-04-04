@@ -1,25 +1,29 @@
 import mlflow
-import mlflow.sklearn
+import joblib
 import os
 
 def register_model():
     try:
+        # Establecer la URI de tracking de MLflow
         mlflow.set_tracking_uri("http://mlflow:5000")
-        mlflow.set_experiment("forest-cover-type")
 
-        # Iniciar una nueva ejecución
-        with mlflow.start_run(run_name="model_register"):
+        # Cargar el modelo desde el archivo pickle
+        model_path = "model.pkl"
+        if not os.path.exists(model_path):
+            raise FileNotFoundError(f"No se encontró el archivo {model_path}")
+        
+        model = joblib.load(model_path)
 
-            # Registrar el modelo entrenado previamente
-            model_path = "model.pkl"
-            if not os.path.exists(model_path):
-                raise FileNotFoundError("No se encontró model.pkl para registrar")
+        # Iniciar experimento (si no existe, lo crea)
+        experiment_name = "ML Model Experiment"
+        mlflow.set_experiment(experiment_name)
 
-            # Cargar y registrar el modelo con un nombre explícito
-            model = mlflow.sklearn.load_model(model_path)
-            mlflow.sklearn.log_model(model, "model", registered_model_name="RandomForestCoverType")
+        with mlflow.start_run():
+            mlflow.log_param("model_type", "Linear Regression")
+            mlflow.sklearn.log_model(model, "model", registered_model_name="LinearRegressionCoverType")
+            mlflow.log_artifact(model_path)
 
-            print("Modelo registrado en MLflow")
+        print("✅ Modelo registrado correctamente en MLflow")
 
     except Exception as e:
-        print(f"[ERROR] Error al registrar el modelo: {e}")
+        print(f"[ERROR] Error al registrar el modelo: {str(e)}")
