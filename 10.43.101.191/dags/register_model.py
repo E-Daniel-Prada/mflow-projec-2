@@ -5,7 +5,7 @@ import os
 def register_model():
     try:
         # Establecer la URI de tracking de MLflow
-        mlflow.set_tracking_uri("http://mlflow:5000")
+        mlflow.set_tracking_uri("http://10.43.101.184:5000")
 
         # Cargar el modelo desde el archivo pickle
         model_path = "model.pkl"
