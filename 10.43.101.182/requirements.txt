@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+mlflow
+pydantic
+python-dotenv
+pandas
+gradio
+boto3
