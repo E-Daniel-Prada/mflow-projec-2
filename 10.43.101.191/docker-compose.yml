@@ -65,6 +65,7 @@ services:
         - ./dags:/app/airflow/dags
         - ./data:/usr/local/airflow/data
         - ./requirements.txt:/requirements.txt
+        - ./mlflow_data:/shared
     command:
           - /bin/sh
           - -c
@@ -106,7 +107,12 @@ services:
       mlflow server --backend-store-uri postgresql://user:password@postgres/mlops_db --default-artifact-root /mlflow --host 0.0.0.0"
     depends_on:
       - postgres
+    volumes:
+      - ./mlflow_data:/mlflow
+      - ./mlflow_data:/shared
+    
 
 volumes:
   postgres_data:
   mysql_data:
+  mlflow_data:
