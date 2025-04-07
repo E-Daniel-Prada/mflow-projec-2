@@ -10,3 +10,4 @@ pymysql
 virtualenv
 apache-airflow
 apache-airflow-providers-postgres
+boto3

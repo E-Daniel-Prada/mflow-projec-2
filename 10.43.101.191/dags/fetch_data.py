@@ -26,7 +26,8 @@ def get_next_id():
 # Función para extraer datos desde la API
 def fetch_data(**kwargs):
     batch_id = get_next_id()
-    url = f"http://192.168.1.14:80/data?group_number={batch_id}"
+    #url = f"http://192.168.1.14:80/data?group_number={batch_id}"
+    url = f"http://10.43.101.191:80/data?group_number={batch_id}"
     try:
         response = requests.get(url)
         data = response.json()

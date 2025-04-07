@@ -15,7 +15,12 @@ logger.setLevel(logging.INFO)
 def train_model():
     try:
         # Establecer tracking URI
-        mlflow.set_tracking_uri("http://mlflow:5000")
+        #mlflow.set_tracking_uri("http://mlflow:5000")
+        mlflow.set_tracking_uri("http://10.43.101.184:5000")
+
+        os.environ['MLFLOW_S3_ENDPOINT_URL'] = "http://10.43.101.184:9000"
+        os.environ['AWS_ACCESS_KEY_ID'] = 'admin'
+        os.environ['AWS_SECRET_ACCESS_KEY'] = 'supersecret'
 
         # Cargar datos
         engine = create_engine('mysql+pymysql://root:root@mysql/data_db')
@@ -47,7 +52,7 @@ def train_model():
         joblib.dump(model, "/shared/model.pkl")
 
         # Iniciar experimento MLflow
-        mlflow.set_experiment("forest-cover-type")
+        mlflow.set_experiment("forest-cover-type-project2-experiment-train")
 
         with mlflow.start_run(run_name="RandomForest_Train"):
             # Log de parámetros y métricas
@@ -65,7 +70,7 @@ def train_model():
             # Log del archivo pickle (opcional)
             mlflow.log_artifact(model_path)
 
-        logger.info("✅ Modelo entrenado, guardado y registrado en MLflow")
+        logger.info("Modelo entrenado, guardado y registrado en MLflow")
 
     except Exception as e:
         logger.info(f"[ERROR] Error en train_model: {e}")

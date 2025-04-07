@@ -89,6 +89,8 @@ services:
         AIRFLOW__WEBSERVER__RBAC: 'false'
         AIRFLOW__WEBSERVER__EXPOSE_CONFIG: 'true'
         AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
+        AWS_ACCESS_KEY_ID: 'admin'
+        AWS_SECRET_ACCESS_KEY: 'supersecret'
     extra_hosts:
       - "host.docker.internal:host-gateway"
     depends_on:
